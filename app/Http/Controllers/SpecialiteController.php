@@ -21,14 +21,14 @@ class SpecialiteController
             // récupération de l'ID du praticien
             Session::put('id_praticien', $idPraticien);
 
-            return view('vues/listeSpecialites', compact('mesSpecialites', 'lesSpecialites', 'monErreur'));
+            return json_encode(array($mesSpecialites, $lesSpecialites));
         }
         catch (MonException $e){
             $monErreur = $e->getMessage();
-            return view('vues/error', compact('monErreur'));
+            return json_encode($monErreur);
         } catch (Exception $e) {
             $monErreur = $e->getMessage();
-            return view('vues/error', compact('monErreur'));
+            return json_encode($e);
         }
     }
 
