@@ -16,30 +16,44 @@ class PraticienController
             Session::forget('monErreur');
             $unServicePraticien = new ServicePraticien();
             $mesPraticiens = $unServicePraticien->getPraticiens();
-            return view('vues/listePraticiens', compact('mesPraticiens', 'monErreur'));
+
+            if ($mesPraticiens != null) {
+                return json_encode(array($mesPraticiens));
+            } else {
+                return json_encode("Aucun praticiens trouvé");
+            }
+
         } catch (MonException $e){
             $monErreur = $e->getMessage();
-            return view('vues/error', compact('monErreur'));
+            return json_encode($monErreur);
         } catch (Exception $e) {
             $monErreur = $e->getMessage();
-            return view('vues/error', compact('monErreur'));
+            return json_encode($e);
         }
     }
 
     public function postSearch() {
         try {
-            $recherche = Request::input('nom');
+            $json = file_get_contents('php://input');
+            $searchJson = json_decode($json);
+            if ($searchJson != null) {
+                $recherche = $searchJson->nom;
+            } else {
+                $recherche = "";
+            }
+
             $unServiceSpecialite = new ServiceSpecialite();
             $searchSpecialite = $unServiceSpecialite->searchSpecialite($recherche);
             $unServicePraticien = new ServicePraticien();
             $searchPraticien = $unServicePraticien->searchPraticien($recherche);
-            return view('vues/rechercher', compact('searchSpecialite', 'searchPraticien'));
+
+            return json_encode(array($searchSpecialite, $searchPraticien));
         } catch (MonException $e){
             $monErreur = $e->getMessage();
-            return view('vues/error', compact('monErreur'));
+            return json_encode($monErreur);
         } catch (Exception $e) {
             $monErreur = $e->getMessage();
-            return view('vues/error', compact('monErreur'));
+            return json_encode($e);
         }
     }
 
