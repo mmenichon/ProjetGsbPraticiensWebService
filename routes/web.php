@@ -18,7 +18,7 @@ Route::get('/listePraticiens', [PraticienController::class, 'getListePraticiens'
 
 Route::get('/specialitesPraticien/{id}', [SpecialiteController::class, 'getListeSpecialitesParPraticien']);
 
-Route::get('/deleteSpecialite/{id}', [SpecialiteController::class, 'getDeleteSpecialite']);
+Route::get('/deleteSpecialite/{id}', [SpecialiteController::class, 'postDeleteSpecialite']);
 
 Route::post('/addSpecialite', [SpecialiteController::class, 'postAddSpecialite']);
 

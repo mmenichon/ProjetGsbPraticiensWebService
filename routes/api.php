@@ -33,7 +33,7 @@ Route::get('/listePraticiens', [PraticienController::class, 'getListePraticiens'
 
 Route::get('/specialitesPraticien/{id}', [SpecialiteController::class, 'getListeSpecialitesParPraticien']);
 
-Route::get('/deleteSpecialite/{id}', [SpecialiteController::class, 'getDeleteSpecialite']);
+Route::post('/deleteSpecialite', [SpecialiteController::class, 'postDeleteSpecialite'])->middleware('cors');
 
 Route::post('/addSpecialite', [SpecialiteController::class, 'postAddSpecialite'])->middleware('cors');
 

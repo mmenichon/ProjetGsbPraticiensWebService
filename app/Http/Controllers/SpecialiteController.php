@@ -9,16 +9,17 @@ use Illuminate\Support\Facades\Session;
 
 class SpecialiteController
 {
-    //Json OK
+    //Json OK mais on sait pas pourquoi
     public function getListeSpecialitesParPraticien($idPraticien) {
         try {
             $unServiceSpecialite = new ServiceSpecialite();
             $mesSpecialites = $unServiceSpecialite->specialitesParPraticien($idPraticien);
-            // appel de la liste de toutes les spécialités
-            $lesSpecialites = $unServiceSpecialite->autresSpecialites($idPraticien);
 
             // récupération de l'ID du praticien
             Session::put('id_praticien', $idPraticien);
+
+            // appel de la liste de toutes les spécialités
+            $lesSpecialites = $unServiceSpecialite->autresSpecialites($idPraticien);
 
             return json_encode(array($mesSpecialites, $lesSpecialites));
         }
@@ -31,11 +32,18 @@ class SpecialiteController
         }
     }
 
-    public function getDeleteSpecialite($idSpe) {
+    public function postDeleteSpecialite() {
         try {
+            $json = file_get_contents('php://input');
+            $deleteJson = json_decode($json);
+            if ($deleteJson != null) {
+                $idSpecialite = $deleteJson->idSpecialite;
+                $idPraticien = $deleteJson->idPraticien;
+            }
+
             $unServiceSpecialite = new ServiceSpecialite();
-            $unServiceSpecialite->deleteSpecialite($idSpe);
-            $mesSpecialites = $unServiceSpecialite->specialitesParPraticien(Session::get('id_praticien'));
+            $unServiceSpecialite->deleteSpecialite($idSpecialite, $idPraticien);
+            $mesSpecialites = $unServiceSpecialite->specialitesParPraticien($idPraticien);
 
             $lesSpecialites = $unServiceSpecialite->allSpecialites();
             return json_encode(array($mesSpecialites, $lesSpecialites));

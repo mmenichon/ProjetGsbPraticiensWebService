@@ -28,6 +28,7 @@ class ServiceSpecialite
     public function autresSpecialites($idSpecialite) {
         try {
             $idPraticien = Session::get('id_praticien');
+
             $lesSpecialites = DB::table('specialite')
                 -> whereNotExists(function ($query) use ($idPraticien) {
                     $query
@@ -59,11 +60,11 @@ class ServiceSpecialite
         }
     }
 
-    public function deleteSpecialite($idSpecialite) {
+    public function deleteSpecialite($idSpecialite, $idPraticien) {
         try {
             DB::table('posseder')
                 -> where('id_specialite', '=', $idSpecialite)
-                -> where('id_praticien', Session::get('id_praticien'))
+                -> where('id_praticien', $idPraticien)
                 -> delete();
         } catch (QueryException $e) {
             throw new MonException($e->getMessage(), 5);

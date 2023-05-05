@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Session;
 
 class PraticienController
 {
+    // Json OK
     public function getListePraticiens() {
         try {
             $monErreur = Session::get('monErreur');
@@ -18,7 +19,7 @@ class PraticienController
             $mesPraticiens = $unServicePraticien->getPraticiens();
 
             if ($mesPraticiens != null) {
-                return json_encode(array($mesPraticiens));
+                return json_encode($mesPraticiens);
             } else {
                 return json_encode("Aucun praticiens trouvé");
             }
