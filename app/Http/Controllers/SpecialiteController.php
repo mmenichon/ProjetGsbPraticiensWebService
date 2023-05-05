@@ -9,10 +9,9 @@ use Illuminate\Support\Facades\Session;
 
 class SpecialiteController
 {
+    //Json OK
     public function getListeSpecialitesParPraticien($idPraticien) {
         try {
-            $monErreur = Session::get('monErreur');
-            Session::forget('monErreur');
             $unServiceSpecialite = new ServiceSpecialite();
             $mesSpecialites = $unServiceSpecialite->specialitesParPraticien($idPraticien);
             // appel de la liste de toutes les spécialités
@@ -28,88 +27,91 @@ class SpecialiteController
             return json_encode($monErreur);
         } catch (Exception $e) {
             $monErreur = $e->getMessage();
-            return json_encode($e);
+            return json_encode($monErreur);
         }
     }
 
     public function getDeleteSpecialite($idSpe) {
         try {
-            $monErreur = Session::get('monErreur');
-            Session::forget('monErreur');
             $unServiceSpecialite = new ServiceSpecialite();
             $unServiceSpecialite->deleteSpecialite($idSpe);
             $mesSpecialites = $unServiceSpecialite->specialitesParPraticien(Session::get('id_praticien'));
 
             $lesSpecialites = $unServiceSpecialite->allSpecialites();
-            return view('vues/listeSpecialites', compact('mesSpecialites', 'lesSpecialites', 'monErreur'));
+            return json_encode(array($mesSpecialites, $lesSpecialites));
         } catch (MonException $e){
             $monErreur = $e->getMessage();
-            return view('vues/error', compact('monErreur'));
+            return json_encode($monErreur);
         } catch (Exception $e) {
             $monErreur = $e->getMessage();
-            return view('vues/error', compact('monErreur'));
+            return json_encode($monErreur);
         }
     }
 
     public function postAddSpecialite() {
         try {
-            $monErreur = Session::get('monErreur');
-            Session::forget('monErreur');
-            $idPraticien = Session::get('id_praticien');
-            $idSpecialite = Request::input('idSpecialite');
+//            $idPraticien = Session::get('id_praticien');
+            $json = file_get_contents('php://input');
+            $addJson = json_decode($json);
+            if ($addJson != null) {
+                $idSpecialite = $addJson->idSpecialite;
+                $idPraticien = $addJson->idPraticien;
+            }
+
             $unServiceSpecialite = new ServiceSpecialite();
             $unServiceSpecialite->addSpecialite($idPraticien, $idSpecialite);
 
             $mesSpecialites = $unServiceSpecialite->specialitesParPraticien($idPraticien);
-            $lesSpecialites = $unServiceSpecialite->autresSpecialites(Session::get('id_ancienneSpe'));
-            return view('vues/listeSpecialites', compact('mesSpecialites', 'lesSpecialites', 'monErreur'));
+            $lesSpecialites = $unServiceSpecialite->autresSpecialites($idPraticien);
+            return json_encode(array($mesSpecialites, $lesSpecialites));
         } catch (MonException $e){
             $monErreur = $e->getMessage();
-            return view('vues/error', compact('monErreur'));
+            return json_encode($monErreur);
         } catch (Exception $e) {
             $monErreur = $e->getMessage();
-            return view('vues/error', compact('monErreur'));
+            return json_encode($monErreur);
         }
     }
 
     public function getUpdateSpecialite($ancienneSpe) {
         try {
-            $monErreur = Session::get('monErreur');
-            Session::forget('monErreur');
-            $unServiceSpecialite = new ServiceSpecialite();
-            $lesSpecialites = $unServiceSpecialite->autresSpecialites($ancienneSpe);
-
             // récupération id ancienne spécialité
             Session::put('id_ancienneSpe', $ancienneSpe);
-
-            return view('vues/modifierSpecialite', compact('lesSpecialites', 'monErreur'));
+            $unServiceSpecialite = new ServiceSpecialite();
+            $lesSpecialites = $unServiceSpecialite->autresSpecialites($ancienneSpe);
+            return json_encode(array($lesSpecialites));
         } catch (MonException $e){
             $monErreur = $e->getMessage();
-            return view('vues/error', compact('monErreur'));
+            return json_encode($monErreur);
         } catch (Exception $e) {
             $monErreur = $e->getMessage();
-            return view('vues/error', compact('monErreur'));
+            return json_encode($monErreur);
         }
     }
 
     public function postUpdateSpecialite() {
         try {
-            $monErreur = Session::get('monErreur');
-            Session::forget('monErreur');
-            $idPraticien = Session::get('id_praticien');
-            $idSpecialite = Request::input('idSpecialite');
+//            $idPraticien = Session::get('id_praticien');
+            $json = file_get_contents('php://input');
+            $updateJson = json_decode($json);
+            if ($updateJson != null) {
+                $idPraticien = $updateJson->idPraticien;
+                $idSpecialite = $updateJson->idSpecialite;
+            }
+
             $unServiceSpecialite = new ServiceSpecialite();
             $unServiceSpecialite->updateSpecialite($idPraticien, $idSpecialite);
 
             $mesSpecialites = $unServiceSpecialite->specialitesParPraticien($idPraticien);
             $lesSpecialites = $unServiceSpecialite->autresSpecialites(Session::get('id_ancienneSpe'));
-            return view('vues/listeSpecialites', compact('mesSpecialites', 'lesSpecialites', 'monErreur'));
+
+            return view('vues/listeSpecialites', compact('mesSpecialites', 'lesSpecialites'));
         } catch (MonException $e){
             $monErreur = $e->getMessage();
-            return view('vues/error', compact('monErreur'));
+            return json_encode($monErreur);
         } catch (Exception $e) {
             $monErreur = $e->getMessage();
-            return view('vues/error', compact('monErreur'));
+            return json_encode($monErreur);
         }
     }
 }

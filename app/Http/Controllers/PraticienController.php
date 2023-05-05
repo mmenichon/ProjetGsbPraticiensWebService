@@ -28,7 +28,7 @@ class PraticienController
             return json_encode($monErreur);
         } catch (Exception $e) {
             $monErreur = $e->getMessage();
-            return json_encode($e);
+            return json_encode($monErreur);
         }
     }
 
@@ -53,7 +53,7 @@ class PraticienController
             return json_encode($monErreur);
         } catch (Exception $e) {
             $monErreur = $e->getMessage();
-            return json_encode($e);
+            return json_encode($monErreur);
         }
     }
 
