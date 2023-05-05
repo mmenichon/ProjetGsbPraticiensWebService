@@ -13,17 +13,13 @@ class PraticienController
     // Json OK
     public function getListePraticiens() {
         try {
-            $monErreur = Session::get('monErreur');
-            Session::forget('monErreur');
             $unServicePraticien = new ServicePraticien();
             $mesPraticiens = $unServicePraticien->getPraticiens();
-
             if ($mesPraticiens != null) {
                 return json_encode($mesPraticiens);
             } else {
                 return json_encode("Aucun praticiens trouvé");
             }
-
         } catch (MonException $e){
             $monErreur = $e->getMessage();
             return json_encode($monErreur);
@@ -33,12 +29,13 @@ class PraticienController
         }
     }
 
+    // Json OK
     public function postSearch() {
         try {
             $json = file_get_contents('php://input');
             $searchJson = json_decode($json);
             if ($searchJson != null) {
-                $recherche = $searchJson->nom;
+                $recherche = $searchJson->recherche;
             } else {
                 $recherche = "";
             }

@@ -32,6 +32,7 @@ class SpecialiteController
         }
     }
 
+    //Json OK
     public function postDeleteSpecialite() {
         try {
             $json = file_get_contents('php://input');
@@ -56,14 +57,15 @@ class SpecialiteController
         }
     }
 
+    // presque Ok
     public function postAddSpecialite() {
         try {
 //            $idPraticien = Session::get('id_praticien');
             $json = file_get_contents('php://input');
             $addJson = json_decode($json);
             if ($addJson != null) {
-                $idSpecialite = $addJson->idSpecialite;
                 $idPraticien = $addJson->idPraticien;
+                $idSpecialite = $addJson->idSpecialite;
             }
 
             $unServiceSpecialite = new ServiceSpecialite();
@@ -81,6 +83,7 @@ class SpecialiteController
         }
     }
 
+    // presque Ok
     public function getUpdateSpecialite($ancienneSpe) {
         try {
             // récupération id ancienne spécialité
