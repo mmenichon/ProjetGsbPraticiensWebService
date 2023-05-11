@@ -107,16 +107,17 @@ class SpecialiteController
             $updateJson = json_decode($json);
             if ($updateJson != null) {
                 $idPraticien = $updateJson->idPraticien;
+                $idAncienneSpe = $updateJson->ancienneSpe;
                 $idSpecialite = $updateJson->idSpecialite;
             }
 
             $unServiceSpecialite = new ServiceSpecialite();
-            $unServiceSpecialite->updateSpecialite($idPraticien, $idSpecialite);
+            $unServiceSpecialite->updateSpecialite($idPraticien, $idAncienneSpe, $idSpecialite);
 
             $mesSpecialites = $unServiceSpecialite->specialitesParPraticien($idPraticien);
             $lesSpecialites = $unServiceSpecialite->autresSpecialites(Session::get('id_ancienneSpe'));
 
-            return view('vues/listeSpecialites', compact('mesSpecialites', 'lesSpecialites'));
+            return json_encode(array($mesSpecialites, $lesSpecialites));
         } catch (MonException $e){
             $monErreur = $e->getMessage();
             return json_encode($monErreur);

@@ -18,13 +18,13 @@ class VisiteurController extends Controller
     public function getLogin() {
         try {
             $monErreur = "";
-            return view('vues/formLogin', compact('monErreur'));
+            return json_encode($monErreur);
         } catch (MonException $e){
             $monErreur = $e->getMessage();
-            return view('vues\formLogin', compact('monErreur'));
+            return json_encode($monErreur);
         } catch (Exception $e) {
             $monErreur = $e->getMessage();
-            return view('vues\formLogin', compact('monErreur'));
+            return json_encode($monErreur);
         }
     }
 
@@ -33,24 +33,30 @@ class VisiteurController extends Controller
      */
     public function signIn() {
         try {
-            $login = Request::input('login');
-            $pwd = Request::input('pwd');
+            $json = file_get_contents('php://input');
+            $loginJson = json_decode($json);
+            if ($loginJson != null) {
+                $login = $loginJson->login_visiteur;
+                $pwd = $loginJson->login_pwd;
+            }
+//            $login = Request::input('login');
+//            $pwd = Request::input('pwd');
             $unVisiteur = new ServiceVisiteur();
             $connected = $unVisiteur->login($login, $pwd);
 
-            if ($connected) {
-                if (Session::get('type') === 'P') {
-                    return view('vues/homePraticien');
-                } else {
-                    return view('home');
-                }
-            } else {
-                $monErreur = "Login ou mot de passe inconnu";
-                return view('vues/formLogin', compact('monErreur'));
-            }
+//            if ($connected) {
+//                if (Session::get('type') === 'P') {
+//                    return view('vues/homePraticien');
+//                } else {
+//                    return view('home');
+//                }
+//            } else {
+//                $monErreur = "Login ou mot de passe inconnu";
+//                return json_encode($monErreur);
+//            }
         } catch (Exception $e) {
             $monErreur = $e->getMessage();
-            return view('vues/formLogin', compact('monErreur'));
+            return json_encode($monErreur);
         }
     }
 
@@ -60,7 +66,7 @@ class VisiteurController extends Controller
     public function signOut() {
         $unVisiteur = new ServiceVisiteur();
         $unVisiteur->logout();
-        return view('home');
+        return json_encode("Déconnexion réussie");
     }
 
 }

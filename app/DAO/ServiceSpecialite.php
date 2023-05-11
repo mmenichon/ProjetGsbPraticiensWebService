@@ -83,9 +83,9 @@ class ServiceSpecialite
         }
     }
 
-    public function updateSpecialite($idPraticien, $idSpecialite) {
+    public function updateSpecialite($idPraticien, $formerSpecialite, $idSpecialite) {
+//        $formerSpecialite = Session::get('id_specialite');
         try {
-            $formerSpecialite = Session::get('id_specialite');
             DB::table('posseder')
                 -> where('id_praticien', '=', $idPraticien)
                 -> where('id_specialite', '=', $formerSpecialite)
