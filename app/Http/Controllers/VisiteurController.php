@@ -38,22 +38,14 @@ class VisiteurController extends Controller
             if ($loginJson != null) {
                 $login = $loginJson->login_visiteur;
                 $pwd = $loginJson->login_pwd;
+            } else {
+                $login = "";
+                $pwd = "";
             }
-//            $login = Request::input('login');
-//            $pwd = Request::input('pwd');
             $unVisiteur = new ServiceVisiteur();
             $connected = $unVisiteur->login($login, $pwd);
+            return json_encode($connected);
 
-//            if ($connected) {
-//                if (Session::get('type') === 'P') {
-//                    return view('vues/homePraticien');
-//                } else {
-//                    return view('home');
-//                }
-//            } else {
-//                $monErreur = "Login ou mot de passe inconnu";
-//                return json_encode($monErreur);
-//            }
         } catch (Exception $e) {
             $monErreur = $e->getMessage();
             return json_encode($monErreur);
