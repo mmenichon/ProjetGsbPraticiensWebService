@@ -57,7 +57,7 @@ class SpecialiteController
         }
     }
 
-    // presque Ok
+    // presque Ok, pb dans liste déroulante
     public function postAddSpecialite() {
         try {
 //            $idPraticien = Session::get('id_praticien');
@@ -83,7 +83,7 @@ class SpecialiteController
         }
     }
 
-    // presque Ok
+    // presque Ok, pb dans liste déroulante
     public function getUpdateSpecialite($ancienneSpe) {
         try {
             // récupération id ancienne spécialité
