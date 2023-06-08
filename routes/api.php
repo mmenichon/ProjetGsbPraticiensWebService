@@ -31,7 +31,9 @@ Route::get('/getLogout', [VisiteurController::class, 'signOut']);
 
 Route::get('/listePraticiens', [PraticienController::class, 'getListePraticiens']);
 
-Route::get('/specialitesPraticien/{id}', [SpecialiteController::class, 'getListeSpecialitesParPraticien']);
+Route::get('/specialitesPraticien/{id}', [SpecialiteController::class, 'getListeSpecialitesParPraticien'])->middleware('cors');
+
+Route::get('/specialitesNonAffectees', [SpecialiteController::class, 'getSpecialitesNonAffectees']);
 
 Route::post('/deleteSpecialite', [SpecialiteController::class, 'postDeleteSpecialite'])->middleware('cors');
 

@@ -25,7 +25,7 @@ class ServiceVisiteur
                 if ($visiteur->pwd_visiteur == $pwd) {
                     Session::put('id', $visiteur->id_visiteur);
                     Session::put('type', $visiteur->type_visiteur);
-                    $connected =true;
+                    $connected = true;
                 }
             }
         } catch (QueryException $e) {

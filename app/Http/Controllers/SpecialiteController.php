@@ -19,9 +19,25 @@ class SpecialiteController
             Session::put('id_praticien', $idPraticien);
 
             // appel de la liste de toutes les spécialités
-            $lesSpecialites = $unServiceSpecialite->autresSpecialites($idPraticien);
+//            $lesSpecialites = $unServiceSpecialite->autresSpecialites($idPraticien);
 
-            return json_encode(array($mesSpecialites, $lesSpecialites));
+            return json_encode($mesSpecialites);
+        }
+        catch (MonException $e){
+            $monErreur = $e->getMessage();
+            return json_encode($monErreur);
+        } catch (Exception $e) {
+            $monErreur = $e->getMessage();
+            return json_encode($monErreur);
+        }
+    }
+
+    public function getSpecialitesNonAffectees($idPraticien) {
+        try {
+            $unServiceSpecialite = new ServiceSpecialite();
+            // appel de la liste de toutes les spécialités
+            $lesSpecialites = $unServiceSpecialite->autresSpecialites($idPraticien);
+            return json_encode($lesSpecialites);
         }
         catch (MonException $e){
             $monErreur = $e->getMessage();
