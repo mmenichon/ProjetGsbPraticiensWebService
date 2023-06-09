@@ -33,7 +33,7 @@ Route::get('/listePraticiens', [PraticienController::class, 'getListePraticiens'
 
 Route::get('/specialitesPraticien/{id}', [SpecialiteController::class, 'getListeSpecialitesParPraticien'])->middleware('cors');
 
-Route::get('/specialitesNonAffectees', [SpecialiteController::class, 'getSpecialitesNonAffectees']);
+Route::get('/specialitesNonAffectees/{id}', [SpecialiteController::class, 'getSpecialitesNonAffectees']);
 
 Route::post('/deleteSpecialite', [SpecialiteController::class, 'postDeleteSpecialite'])->middleware('cors');
 
@@ -43,8 +43,11 @@ Route::get('/updateSpecialite/{id}', [SpecialiteController::class, 'getUpdateSpe
 
 Route::post('/updateSpecialite', [SpecialiteController::class, 'postUpdateSpecialite'])->middleware('cors');
 
-Route::post('/postSearch',
-    [
-        'as' => 'postSearch',
-        'uses' => 'App\Http\Controllers\PraticienController@postSearch'
-    ])->middleware('cors');
+//Route::post('/postSearch',
+//    [
+//        'as' => 'postSearch',
+//        'uses' => 'App\Http\Controllers\PraticienController@postSearch'
+//    ])->middleware('cors');
+
+Route::post('/searchPraticien', [PraticienController::class, 'postSearchPraticien'])->middleware('cors');
+Route::post('/searchSpecialite', [PraticienController::class, 'postSearchSpecialite'])->middleware('cors');
