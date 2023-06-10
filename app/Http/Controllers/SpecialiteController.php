@@ -134,6 +134,10 @@ class SpecialiteController
             $lesSpecialites = $unServiceSpecialite->autresSpecialites(Session::get('id_ancienneSpe'));
 
             return json_encode(array($mesSpecialites, $lesSpecialites));
+            
+//             $lesSpecialites = $unServiceSpecialite->autresSpecialites($idAncienneSpe);
+//             return json_encode($lesSpecialites));
+            
         } catch (MonException $e){
             $monErreur = $e->getMessage();
             return json_encode($monErreur);
